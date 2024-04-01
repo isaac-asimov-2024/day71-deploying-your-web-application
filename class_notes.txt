@@ -47,3 +47,24 @@
 
 # Commit your changes: At this point you made some changes in the main.py with your environment variables and created a
 # new file in the project. Go to the Commit Tool and save your changes under version control.
+
+# Push to your remote on Github: Go to your PyCharm settings, search "github" and link Pycharm with GitHub (add your
+# github account in PyCharm)
+
+# Once you start using git for version control, PyCharm will change the VCS menu to read "Git" instead.
+# Go to Git -> GitHub -> Share project on Github. This will push your code to your remote. Pick your repository name
+# (any name will do). And click "Share". You should then see your project as a GitHub's website.
+
+
+# Create an account with a free hosting service (cyclic.sh, free forever plan).
+# You can create an account on cyclic simply by signing up via Github
+
+# Create a new Web Service in cyclic
+# Choose your blog app that you've uploaded to GitHub and connect your repository
+
+# Edit the Start Command: Most of render.com's defaults are fine. All you need to do is pick a name for your project
+# and then change the Start Command to: gunicorn main:app
+
+# Add your first environment variable: Before you create your web service, click "Advanced" and add your environment
+# variables
+
