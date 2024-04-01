@@ -1,6 +1,6 @@
 # imports
-from datetime import date
-from flask import Flask, abort, render_template, redirect, url_for, flash, request
+from datetime import date, timedelta
+from flask import Flask, abort, render_template, redirect, url_for, flash, request, session
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 # this produces error when working with Flask 3.0.0 and above. so I replaced it with a function to produce a Gravatr
@@ -165,6 +165,14 @@ def gravatar_url(email, size=100, rating='g', default='retro', force_default=Fal
 @login_manager.user_loader
 def load_user(user_id):
     return db.get_or_404(User, user_id)
+
+
+# function activated before every request, used to end the user session after 5 minute inactive.
+@app.before_request
+def before_request():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=5)
+    session.modified = True
 
 
 # decorator function to restrict access to certain routes to admin only
@@ -392,8 +400,8 @@ def edit_post(post_id):
     return render_template("make-post.html", form=edit_form, is_edit=True)
 
 
-# route to delete an existing blog post. the "admin_only" decorator ensures that only an admin user can access this
-# route
+# route to delete an existing blog post. (also deletes associated comments from db). the "admin_only" decorator ensures
+# that only an admin user can access this route
 @app.route("/delete/<int:post_id>")
 @admin_only
 def delete_post(post_id):
@@ -401,7 +409,14 @@ def delete_post(post_id):
     # getting the requested post-entry from the db by its ID
     post_to_delete = db.get_or_404(BlogPost, post_id)
 
-    # deleting the post from db
+    # getting the post's comment-entries in the db (also need to be deleted)\
+    comments_to_delete = db.session.execute(db.select(Comment).where(Comment.parent_post_id == post_id)).scalars().all()
+
+    # deleting the comments first
+    for comment in comments_to_delete:
+        db.session.delete(comment)
+
+    # deleting the post from db and committing
     db.session.delete(post_to_delete)
     db.session.commit()
 
