@@ -429,22 +429,25 @@ def contact():
         message = request.form["message"]
 
         formatted_message = f"Name: {name}\nEmail: {email}\nPhone Number: {phone}\nMessage: {message}"
+        print(formatted_message)
 
-        # creating a connection to the mail server
-        with smtplib.SMTP(GMAIL_SMTP_SERVER) as connection:
-            # securing our connection to the email server
-            connection.starttls()
+        try:
+            # changed method for sending emails (so it would work on web published blog)
+            smtp_server = smtplib.SMTP_SSL(GMAIL_SMTP_SERVER, 465)
+            smtp_server.ehlo()
+            smtp_server.login(MY_EMAIL, MY_PASSWORD)
+            smtp_server.sendmail(from_addr=MY_EMAIL, to_addrs=ADMIN_EMAIL,
+                                 msg=f"subject:New Message!\n\n{formatted_message}")
+            smtp_server.close()
+            print("Email sent successfully!")
 
-            # logging in
-            connection.login(user=MY_EMAIL, password=MY_PASSWORD)
+        except Exception as ex:
+            print("Something went wrong….", ex)
 
-            # sending the email
-            connection.sendmail(from_addr=MY_EMAIL,
-                                to_addrs=ADMIN_EMAIL,
-                                msg=f"Subject:New Message\n\n{formatted_message}")
-
-        # rendering the contact page with a "success" message to notify the user that the form was submitted and handled
-        return render_template("contact.html", msg_sent=True)
+        else:
+            # rendering the contact page with a "success" message to notify the user that the form was submitted and
+            # handled
+            return render_template("contact.html", msg_sent=True)
 
     # otherwise, if the function receives a 'get' request it renders the contact page with the contact form to fill
     return render_template("contact.html", msg_sent=False)

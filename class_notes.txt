@@ -119,3 +119,9 @@
 # if you got this far, Your blog should be up and running now. You've got a blank slate so register your first (admin)
 # user and write your first blog post.
 
+
+# further deployment notes:
+# -------------------------
+
+# had to install email_validator per render's request (register and login did not work without it).
+
