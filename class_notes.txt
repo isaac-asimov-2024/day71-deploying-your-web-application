@@ -55,9 +55,8 @@
 # Go to Git -> GitHub -> Share project on Github. This will push your code to your remote. Pick your repository name
 # (any name will do). And click "Share". You should then see your project as a GitHub's website.
 
-
-# Create an account with a free hosting service (cyclic.sh, free forever plan).
-# You can create an account on cyclic simply by signing up via Github
+# Create an account with a free hosting service (render.com).
+# You can create an account on render simply by signing up via Github
 
 # Create a new Web Service in cyclic
 # Choose your blog app that you've uploaded to GitHub and connect your repository
@@ -65,6 +64,58 @@
 # Edit the Start Command: Most of render.com's defaults are fine. All you need to do is pick a name for your project
 # and then change the Start Command to: gunicorn main:app
 
-# Add your first environment variable: Before you create your web service, click "Advanced" and add your environment
-# variables
+# make sure you choose the free version (the default is starter, which is paid)
+
+# Add your environment variables at the appropriate fields
+
+# press create web service
+
+# Your web app won't work yet, however. We first need to set up our database and set the environment variable for
+# SQLAlchemy.
+
+
+# Upgrade SQLite Database to PostgreSQL
+# -------------------------------------
+
+# When we were coding and testing our Flask website, it was nice to use a simple database like SQLite. But SQLite is a
+# file-based database.
+
+# This is its strength and weakness. It's a strength because while we're coding up our database and debugging, it's
+# really useful to be able to open the SQLite file using DB Viewer and see how our data looks.
+
+# But it's also a weakness because once it's deployed with a hosting provider (like Heroku or Render) the file
+# locations are shifted around every 24 hours or so. This means that your database might just get wiped every day.
+# That will mean some very unhappy users
+
+# So we've got to put on our big-boy/big-girl pants and upgrade our simple SQLite database to PosgreSQL, a database
+# that can handle millions of data entries and reliably delivers data to users.
+
+# Luckily, because we used SQLAlchemy to create our Flask app, there's nothing we need to change in terms of code.
+# We just need to set up the PostgreSQL database.
+
+# the process:
+# ------------
+
+# 1) Create a new Postgres database from the website (render.com) menu.
+
+# 2) Next, you will see a form. All you need to do is pick a name for the database and create it.
+
+# 3) again, make sure you choose the free version.
+
+# 4) Once you've created your database, go and find the Internal Database URL in the Info section. You might have to
+#    wait a little while until your database is created. Afterwards, simply copy this URL. You will shortly use this as
+#    an environment variable.
+# 5) Set your SQLALCHEMY_DATABASE_URI environment variable: Go back to your web service settings called "environment"
+#    Create an environment variable that matches the name of the key you're using in the main.py ("DB_URI")
+# 6) Paste your internal database URL as the key value. You just need to make one small modification. Change the first
+#    part from postgres to postgresql. The URI has to start with "postgresql" because this is required by SQLAlchemy:
+#
+#    How does all this work? SQLite is pre-installed for all Python projects, but here we are using Postgres. The
+#    reason we can seamlessly switch from SQLite to Postgres is because we are using the psycopg package in combination
+#    with SQLAlchemy. The psycopg module is an incredibly popular PostgreSQL database adapter for Python. (You can see
+#    the psycopg package listed in the requirements.txt.)
+
+
+# if you got this far, Your blog should be up and running now. You've got a blank slate so register your first (admin)
+# user and write your first blog post.
 
