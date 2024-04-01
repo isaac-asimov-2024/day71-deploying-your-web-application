@@ -15,7 +15,7 @@
             >Posted by
             <!-- the 'author' property of a post (= a BlogPost object) is now a User object. so we can tap into that
             object's name attribute -->
-            <a href="#">{{ post.author.name }}</a>
+            <a href="{{ url_for('about') }}">{{ post.author.name }}</a>
             on {{ post.date }}
           </span>
         </div>

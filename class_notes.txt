@@ -125,3 +125,6 @@
 
 # had to install email_validator per render's request (register and login did not work without it).
 
+# had to change smtp method so sending emails to admin from contact section would work on a web-published blog (see
+# main / contact route)
+
