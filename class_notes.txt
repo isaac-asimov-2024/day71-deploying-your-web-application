@@ -1,0 +1,17 @@
+# version control using PyCharm's GUI
+# -----------------------------------
+
+#  Enable git as your local version control system. In the PyCharm GUI go to VCS -> Enable Version Control Integration.
+# Make sure that you select Git when asked which version control system to use.
+# This is equivalent to typing git init in the Terminal.\
+
+# If successful, you should now have a new Git Pane (bottomm left) where you can see the Git Console and Git Logs
+
+# Add the Unversioned Files and Commit:
+# 1) All the files in our project will turn red because they are not yet added to the staging area to be tracked by git.
+# 2) Add and commit your files to version control using the Commit tool (The Commit tool window will become visible on
+#    the left side after you've enabled version control. The files and folders (e.g., PyCharm's .idea folder) listed in
+#    the .gitignore file will be excluded.
+# 3) Add all the unversioned files, write your commit message and click "commit".
+# 4) All the tracked files should now no longer be red.
+# 5) If successful, you should now be able to see your first commit in the Git Log pane
